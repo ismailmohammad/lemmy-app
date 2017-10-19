@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, TextInput, Button, Alert, ScrollView } from 'react-native';
-import { Constants, Facebook } from 'expo';
+import { Text, View, StyleSheet, Image, TextInput, Button, Alert } from 'react-native';
+import { Constants, Facebook, Google } from 'expo';
 
 export default class App extends Component {
   static navigationOptions = {
@@ -54,7 +54,7 @@ export default class App extends Component {
           // Get the user's name using Facebook's Graph API
           const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
           const profile = await response.json();
-          this.setState({title: "Hi ${profile.name}!"})
+          this.setState({title: "Hi " + profile.name + "!"})
           Alert.alert(
             'Logged in!',
             `Hi ${profile.name}! Welcome to Lemmy the Lemon!`,
@@ -83,9 +83,49 @@ export default class App extends Component {
     }
   };
 
+  _handleGoogleLogin = async () => {
+    try {
+      const { type, user } = await Google.logInAsync({
+        androidStandaloneAppClientId: '<ANDROID_CLIENT_ID>',
+        iosStandaloneAppClientId: '<IOS_CLIENT_ID>',
+        androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
+        iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
+        scopes: ['profile', 'email']
+      });
+
+      switch (type) {
+        case 'success': {
+          this.setState({title: "Hi " + user.name + "!"})
+          Alert.alert(
+            'Logged in!',
+            `Hi ${user.name}! Welcome to Lemmy the Lemon!`,
+          );
+          break;
+        }
+        case 'cancel': {
+          Alert.alert(
+            'Cancelled!',
+            'Login was cancelled!',
+          );
+          break;
+        }
+        default: {
+          Alert.alert(
+            'Oops!',
+            'Login failed!',
+          );
+        }
+      }
+    } catch (e) {
+      Alert.alert(
+        'Oops!',
+        'Login failed!',
+      );
+    }
+  };
+
   render() {
     return (
-      <ScrollView style={styles.scroll_container}>
       <View style={styles.container}>
 
         {/*  Title of the App for Login Screen */}
@@ -94,11 +134,7 @@ export default class App extends Component {
             {this.state.title}
         </Text>
 
-        {/* Mohammad Ismail Logo */}
-        <Image
-          source={{ uri: 'http://ismailmohammad.github.io/img/profile_2_bak.png' }}
-          style={{ height: 120, width: 120, padding:24 }}
-        />
+
 
         {/* Text Label for Username */}
         <Text style={styles.text_field}>
@@ -123,12 +159,14 @@ export default class App extends Component {
           value={this.state.passphrase}
           onChangeText={this._handleTextChange2}
           style={styles.password_input}
+          secureTextEntry={true}
         />
 
+        <View style={styles.button_layout}>
         {/* Login Button */}
         <Button
           title="Login"
-          color="#000000"
+          color="#009900"
           onPress={this._handleButtonPress}
         />
 
@@ -137,8 +175,8 @@ export default class App extends Component {
           title="Register"
           color="#000099"
           onPress={this._handleRegisterPress}
-          style={{ padding:24 }}
         />
+        </View>
 
         {/* Clear Button */}
         <Button
@@ -147,13 +185,38 @@ export default class App extends Component {
           color="#ff0000"
         />
 
-         {/* Testing Facebook Login*/}
+        <View style={{padding: 5, flex: 0}}>
+         {/* Facebook Login Authentication*/}
         <Button
           title="Login with Facebook"
           onPress={this._handleFacebookLogin}
         />
         </View>
-    </ScrollView>
+
+        <View style={{padding: 5, flex: 0}}>
+        {/* Google Login Authentication */}
+        <Button
+          title="Login with Google"
+          onPress={this._handleGoogleLogin}
+        />
+        </View>
+
+
+        <View style={{flex: 1, flexDirection: 'row'}}>
+        {/* Lemmy the Lemon */}
+        <Image
+          source={require('../assets/images/the-lemon.png')}
+          style={{ height: 100, width: 100}}
+        />
+
+        {/* Mohammad Ismail Logo */}
+        <Image
+          source={require('../assets/icons/lemmy-icon.png')}
+          style={{ height: 120, width: 120}}
+        />
+        </View>
+
+        </View>
     );
   }
 }
@@ -199,5 +262,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     borderColor: 'yellow',
+  },
+  button_layout: {
+    flex: 0,
+    flexDirection: 'row',
+    padding: 5,
   },
 });

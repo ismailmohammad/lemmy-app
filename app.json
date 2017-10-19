@@ -7,7 +7,7 @@
     "sdkVersion": "21.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
-    "primaryColor": "#cccccc",
+    "primaryColor": "#000000",
     "icon": "./assets/icons/lemmy-icon.png",
     "notification": {
       "icon": "./assets/icons/notification-icon.png",

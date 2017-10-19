@@ -15,12 +15,6 @@ export default TabNavigator(
     Login: {
       screen: LoginScreen,
     },
-    Home: {
-      screen: HomeScreen,
-    },
-    Links: {
-      screen: LinksScreen,
-    },
     Settings: {
       screen: SettingsScreen,
     },
@@ -33,8 +27,8 @@ export default TabNavigator(
         switch (routeName) {
           case 'Login':
             iconName = Platform.OS === 'ios'
-              ? `ios-information-circle${focused ? '' : '-outline'}`
-              : 'md-information-circle';
+              ? `ios-key${focused ? '' : '-outline'}`
+              : 'md-key';
             break;
           case 'Home':
             iconName = Platform.OS === 'ios'
@@ -63,7 +57,7 @@ export default TabNavigator(
     }),
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
-    animationEnabled: false,
-    swipeEnabled: true,
+    animationEnabled: true,
+    swipeEnabled: false,
   }
 );

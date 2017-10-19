@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Alert } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
@@ -23,7 +23,7 @@ export default class App extends React.Component {
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           {Platform.OS === 'android' &&
-            <View style={styles.statusBarUnderlay} />}
+            <View style={styles.statusBarUnderlay}/>}
           <RootNavigation />
         </View>
       );
@@ -35,7 +35,7 @@ export default class App extends React.Component {
       Asset.loadAsync([
         require('./assets/images/robot-dev.png'),
         require('./assets/images/robot-prod.png'),
-        require('./assets/images/ismailmohammad_logo.png'),
+        require('./assets/images/ismailmohammad-logo.png'),
       ]),
       Font.loadAsync([
         // This is the font that we are using for our tab bar
@@ -65,6 +65,6 @@ const styles = StyleSheet.create({
   },
   statusBarUnderlay: {
     height: 24,
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: '#000000',
   },
 });
